@@ -2,14 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\DataClasses\AnswerAddedData;
+use App\Events\AnswerEvent;
 use App\Models\Answer;
 use App\Models\Question;
-use App\Models\Quiz;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class AnswerController extends Controller
 {
+    public function addAnswer(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'text'      => 'required|string|max:255',
+            'question'  => 'required|string|max:255'
+        ]);
+
+        $dataClass = new AnswerAddedData();
+        $dataClass->setAnswer($data['text']);
+        $dataClass->setQuestion($data['question']);
+        AnswerEvent::dispatch($dataClass);
+
+        return response()->json([], 201);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      *

@@ -24,8 +24,7 @@ class QuizController extends Controller
         $dataClass = new BroadcastStartedData();
         $dataClass->setQuiz($quiz);
         BroadcastEvent::dispatch($dataClass);
-        //dispatch broadcast event
-        //set in cache broadcast is active
+
         return response()->json([], 201);
     }
 

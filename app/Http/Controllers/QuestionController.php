@@ -2,14 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\DataClasses\SetQuestionActiveData;
+use App\Events\BroadcastEvent;
 use App\Models\Question;
 use App\Models\Quiz;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class QuestionController extends Controller
 {
+    /**
+     * Set question as active
+     * @param Question $question
+     * @return JsonResponse
+     */
+    public function setQuestionActive(Question $question): JsonResponse
+    {
+        $dataclass = new SetQuestionActiveData();
+        $dataclass->setQuestion($question);
+        BroadcastEvent::dispatch($dataclass);
+
+        return response()->json([], 201);
+    }
 
     /**
      * Store a newly created resource in storage.
