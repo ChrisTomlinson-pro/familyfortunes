@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Jobs\Quiz;
+namespace App\Jobs\Answer;
 
-use App\Events\TransmitToChannelsEvent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Cache;
 
-class EndQuizBroadcast implements ShouldQueue
+class RemoveAnswer implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -32,8 +30,6 @@ class EndQuizBroadcast implements ShouldQueue
      */
     public function handle()
     {
-        Cache::forget('activeQuiz');
-        Cache::put('broadcasting', false);
-        TransmitToChannelsEvent::dispatch(null, true);
+        //
     }
 }

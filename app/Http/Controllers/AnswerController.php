@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\DataClasses\AnswerAddedData;
+use App\DataClasses\RemoveAnswerData;
+use App\DataClasses\ShowAnswerData;
 use App\Events\AnswerEvent;
 use App\Models\Answer;
 use App\Models\Question;
@@ -12,6 +14,12 @@ use Illuminate\View\View;
 
 class AnswerController extends Controller
 {
+
+    /**
+     * Add an answer
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function addAnswer(Request $request): JsonResponse
     {
         $data = $request->validate([
@@ -20,10 +28,35 @@ class AnswerController extends Controller
         ]);
 
         $dataClass = new AnswerAddedData();
-        $dataClass->setAnswer($data['text']);
+        $dataClass->setAnswerText($data['text']);
         $dataClass->setQuestion($data['question']);
         AnswerEvent::dispatch($dataClass);
 
+        return response()->json([], 201);
+    }
+
+    /**
+     * @param Answer $answer
+     * @return JsonResponse
+     */
+    public function showAnswer(Answer $answer): JsonResponse
+    {
+        $dataClass = new ShowAnswerData();
+        $dataClass->setAnswer($answer);
+        AnswerEvent::dispatch($dataClass);
+
+        return response()->json([], 201);
+    }
+
+    /**
+     * @param Answer $answer
+     * @return JsonResponse
+     */
+    public function removeAnswer(Answer $answer): JsonResponse
+    {
+        $dataClass = new RemoveAnswerData();
+        $dataClass->setAnswer($answer);
+        AnswerEvent::dispatch($dataClass);
         return response()->json([], 201);
     }
 

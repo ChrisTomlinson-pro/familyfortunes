@@ -3,6 +3,7 @@
 namespace App\Jobs\Quiz;
 
 use App\DataClasses\BroadcastStartedData;
+use App\Events\TransmitToChannelsEvent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -39,5 +40,6 @@ class BroadcastQuiz implements ShouldQueue
     {
         Cache::add('broadcasting', true);
         Cache::add('activeQuiz', $this->dataClass->quiz->getAttributeValue('uuid'));
+        TransmitToChannelsEvent::dispatch($this->dataClass);
     }
 }

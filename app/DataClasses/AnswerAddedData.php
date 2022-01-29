@@ -22,7 +22,7 @@ class AnswerAddedData implements DataClassInterface
      * @param string $text
      * @return void
      */
-    public function setAnswer(string $text)
+    public function setAnswerText(string $text)
     {
         $this->text = $text;
     }

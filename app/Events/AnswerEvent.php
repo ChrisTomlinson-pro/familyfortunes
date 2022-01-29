@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\DataClasses\AnswerAddedData;
 use App\DataClasses\Interfaces\DataClassInterface;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -37,6 +38,10 @@ class AnswerEvent
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        if ($this->dataClass instanceof AnswerAddedData) {
+            return new PrivateChannel('auth-answer');
+        }
+
+        return new Channel('public-answer');
     }
 }

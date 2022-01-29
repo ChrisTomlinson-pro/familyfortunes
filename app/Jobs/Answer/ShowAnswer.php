@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Jobs\Question;
+namespace App\Jobs\Answer;
 
-use App\DataClasses\SetQuestionActiveData;
+use App\DataClasses\ShowAnswerData;
 use App\Events\TransmitToChannelsEvent;
-use App\Models\Question;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,17 +12,12 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 
-class SetQuestionActive implements ShouldQueue
+class ShowAnswer implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * @var Question
-     */
-    private $question;
-
-    /**
-     * @var SetQuestionActiveData
+     * @var ShowAnswerData
      */
     private $dataClass;
 
@@ -32,10 +26,9 @@ class SetQuestionActive implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(SetQuestionActiveData $dataClass)
+    public function __construct(ShowAnswerData $dataClass)
     {
         $this->dataClass = $dataClass;
-        $this->question = $dataClass->question;
     }
 
     /**
@@ -45,8 +38,21 @@ class SetQuestionActive implements ShouldQueue
      */
     public function handle()
     {
-        $cacheKey = $this->question->quiz->uuid . '_question';
-        Cache::put($cacheKey, $this->question->uuid);
+        $question = $this->dataClass->answer->question;
+        $cacheKey = $question->uuid . '_answers';
+
+        $cachedAnswers = Cache::get($cacheKey);
+        if (!$cachedAnswers) {
+            $cachedAnswers = [];
+        }
+
+        $newCacheData = [
+            'uuid' => $this->dataClass->answer->uuid,
+            'text' => $this->dataClass->answer->text
+        ];
+
+        $cachedAnswers = array_push($cachedAnswers, $newCacheData);
+        Cache::put($cacheKey, $cachedAnswers);
         TransmitToChannelsEvent::dispatch($this->dataClass);
     }
 }
