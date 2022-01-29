@@ -6,6 +6,7 @@ use App\Models\Question;
 use App\Models\Quiz;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class QuestionController extends Controller
 {
@@ -25,8 +26,9 @@ class QuestionController extends Controller
         ]);
 
         $question = Question::query()->create([
-            'text' => $data['text'],
-            'quiz_id' => $quiz->id
+            'uuid'      => Str::uuid()->toString(),
+            'text'      => $data['text'],
+            'quiz_id'   => $quiz->id
         ]);
 
         if ($question instanceof Question) {
@@ -63,7 +65,6 @@ class QuestionController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Question $question
-     * @param Quiz $quiz
      * @return RedirectResponse
      * @throws \ErrorException
      */

@@ -2,13 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\DataClasses\BroadcastEndedData;
+use App\DataClasses\BroadcastStartedData;
+use App\Events\BroadcastEvent;
 use App\Models\Quiz;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Psy\Exception\ErrorException;
 
 class QuizController extends Controller
 {
+    /**
+     * Start the quiz broadcast
+     * @param Quiz $quiz
+     * @return JsonResponse
+     */
+    public function beginBroadcast(Quiz $quiz): JsonResponse
+    {
+        $dataClass = new BroadcastStartedData();
+        $dataClass->setQuiz($quiz);
+        BroadcastEvent::dispatch($dataClass);
+        //dispatch broadcast event
+        //set in cache broadcast is active
+        return response()->json([], 201);
+    }
+
+    /**
+     * End the broadcast
+     * @param Quiz $quiz
+     * @return JsonResponse
+     */
+    public function endBroadCast(Quiz $quiz): JsonResponse
+    {
+        $dataClass = new BroadcastEndedData();
+        $dataClass->setQuiz($quiz);
+        BroadcastEvent::dispatch($dataClass);
+        return response()->json([], 201);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -45,6 +78,7 @@ class QuizController extends Controller
         ]);
 
         $quiz = Quiz::query()->create([
+            'uuid' => Str::uuid()->toString(),
             'name' => $data['name']
         ]);
 

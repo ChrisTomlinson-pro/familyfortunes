@@ -15,9 +15,9 @@
                         <div class="max-w-0 align-content-between">
                             <div>{{ $quiz->name }}</div>
                             <div>
-                                <a href="{{ route('begin-broadcast')  }}">Begin Broadcasting</a>
+                                <a href="{{ route('begin-broadcast', ['quiz' => $quiz->uuid])  }}">Begin Broadcasting</a>
                             </div>
-                            <form action="{{ route('delete-quiz', ['quiz' => $quiz->uuid]) }}" content="enctype-multipart" method="delete">
+                            <form action="{{ route('quiz-delete', ['quiz' => $quiz->uuid]) }}" content="enctype-multipart" method="delete">
                                 @method("DELETE")
                                 <div>
                                     <button type="submit" class="btn btn-sm btn-danger" >Delete</button>

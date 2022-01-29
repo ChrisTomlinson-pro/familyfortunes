@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function() {
      * Prefix: 'quiz'
      */
     Route::prefix('quiz')->group(function() {
+        Route::get('begin-broadcast/{quiz:uuid}', [\App\Http\Controllers\QuizController::class, 'beginBroadcast'])->name('begin-broadcast');
         Route::get('create', [\App\Http\Controllers\QuizController::class, 'create'])->name('quiz-create');
         Route::post('store', [\App\Http\Controllers\QuizController::class, 'store'])->name('quiz-store');
         Route::get('show/{quiz:uuid}', [\App\Http\Controllers\QuizController::class, 'show'])->name('quiz-show');
