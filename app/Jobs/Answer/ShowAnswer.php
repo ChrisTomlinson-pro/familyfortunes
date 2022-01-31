@@ -3,7 +3,7 @@
 namespace App\Jobs\Answer;
 
 use App\DataClasses\ShowAnswerData;
-use App\Events\TransmitToChannelsEvent;
+use App\Events\BroadcastToChannelsEvent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -53,6 +53,6 @@ class ShowAnswer implements ShouldQueue
 
         $cachedAnswers = array_push($cachedAnswers, $newCacheData);
         Cache::put($cacheKey, $cachedAnswers);
-        TransmitToChannelsEvent::dispatch($this->dataClass);
+        BroadcastToChannelsEvent::dispatch($this->dataClass);
     }
 }

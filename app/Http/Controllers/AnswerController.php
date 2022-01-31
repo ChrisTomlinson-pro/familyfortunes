@@ -9,7 +9,9 @@ use App\Events\AnswerEvent;
 use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class AnswerController extends Controller
@@ -45,7 +47,7 @@ class AnswerController extends Controller
         $dataClass->setAnswer($answer);
         AnswerEvent::dispatch($dataClass);
 
-        return response()->json([], 201);
+        return response()->json([], 200);
     }
 
     /**
@@ -64,9 +66,10 @@ class AnswerController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param Question $question
      * @return View
      */
-    public function create(Question $question)
+    public function create(Question $question): View
     {
         return view('answer/create', ['question' => $question]);
     }
@@ -74,12 +77,12 @@ class AnswerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param Question $question
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      * @throws \ErrorException
      */
-    public function store(Request $request, Question $question)
+    public function store(Request $request, Question $question): RedirectResponse
     {
         $data = $request->validate([
             'text' => 'required|string'
@@ -96,21 +99,10 @@ class AnswerController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Answer  $answer
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Answer $answer)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Answer  $answer
-     * @return \Illuminate\Http\Response
+     * @param Answer $answer
+     * @return Response
      */
     public function edit(Answer $answer)
     {
@@ -120,22 +112,11 @@ class AnswerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Answer  $answer
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Answer $answer
+     * @return Response
      */
     public function update(Request $request, Answer $answer)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Answer  $answer
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Answer $answer)
     {
         //
     }

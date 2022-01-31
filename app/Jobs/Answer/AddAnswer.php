@@ -3,7 +3,7 @@
 namespace App\Jobs\Answer;
 
 use App\DataClasses\AnswerAddedData;
-use App\Events\TransmitToChannelsEvent;
+use App\Events\BroadcastToChannelsEvent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -39,6 +39,6 @@ class AddAnswer implements ShouldQueue
     public function handle()
     {
         $this->dataClass->question->addAnswer($this->dataClass->text);
-        TransmitToChannelsEvent::dispatch($this->dataClass);
+        BroadcastToChannelsEvent::dispatch($this->dataClass);
     }
 }

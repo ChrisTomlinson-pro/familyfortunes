@@ -3,7 +3,7 @@
 namespace App\Jobs\Question;
 
 use App\DataClasses\SetQuestionActiveData;
-use App\Events\TransmitToChannelsEvent;
+use App\Events\BroadcastToChannelsEvent;
 use App\Models\Question;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -47,6 +47,6 @@ class SetQuestionActive implements ShouldQueue
     {
         $cacheKey = $this->question->quiz->uuid . '_question';
         Cache::put($cacheKey, $this->question->uuid);
-        TransmitToChannelsEvent::dispatch($this->dataClass);
+        BroadcastToChannelsEvent::dispatch($this->dataClass);
     }
 }

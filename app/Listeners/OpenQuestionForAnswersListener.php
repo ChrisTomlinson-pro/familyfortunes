@@ -2,13 +2,16 @@
 
 namespace App\Listeners;
 
+use App\DataClasses\OpenQuestionForAnswersData;
 use App\DataClasses\SetQuestionActiveData;
+use App\Events\QuestionEvent;
 use App\Events\QuizEvent;
+use App\Jobs\Question\OpenQuestionForAnswers;
 use App\Jobs\Question\SetQuestionActive;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class QuestionSetActiveListener
+class OpenQuestionForAnswersListener
 {
     /**
      * Create the event listener.
@@ -23,14 +26,14 @@ class QuestionSetActiveListener
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param QuestionEvent $event
      * @return void
      */
-    public function handle(QuizEvent $event)
+    public function handle(QuestionEvent $event)
     {
         $dataClass = $event->dataClass;
-        if ($dataClass instanceof SetQuestionActiveData) {
-            SetQuestionActive::dispatch($dataClass);
+        if ($dataClass instanceof OpenQuestionForAnswersData) {
+            OpenQuestionForAnswers::dispatch($dataClass);
         }
     }
 }

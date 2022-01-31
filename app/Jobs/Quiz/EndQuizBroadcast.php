@@ -2,7 +2,8 @@
 
 namespace App\Jobs\Quiz;
 
-use App\Events\TransmitToChannelsEvent;
+use App\DataClasses\BroadcastEndedData;
+use App\Events\BroadcastToChannelsEvent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -16,13 +17,18 @@ class EndQuizBroadcast implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
+     * @var BroadcastEndedData
+     */
+    private $dataClass;
+
+    /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(BroadcastEndedData $dataClass)
     {
-        //
+        $this->dataClass = $dataClass;
     }
 
     /**
@@ -34,6 +40,6 @@ class EndQuizBroadcast implements ShouldQueue
     {
         Cache::forget('activeQuiz');
         Cache::put('broadcasting', false);
-        TransmitToChannelsEvent::dispatch(null, true);
+        BroadcastToChannelsEvent::dispatch($this->dataClass);
     }
 }

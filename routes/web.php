@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\QuizController;
+use App\Http\Controllers\AnswerController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,36 +26,68 @@ Route::get('/dashboard', function () {
     return view('dashboard', ['quizzes' => $quizzes]);
 })->middleware(['auth'])->name('dashboard');
 
-Route::middleware('auth')->group(function() {
+//Route::middleware('auth')->group(function() {
+Route::middleware([])->group(function() {
 
-    Route::get('admin-home', [\App\Http\Controllers\QuizController::class, 'index'])->name('admin-home');
+    Route::get('admin-home', [QuizController::class, 'index'])->name('admin-home');
 
     /**
      * Prefix: 'quiz'
      */
     Route::prefix('quiz')->group(function() {
-        Route::get('begin-broadcast/{quiz:uuid}', [\App\Http\Controllers\QuizController::class, 'beginBroadcast'])->name('begin-broadcast');
-        Route::get('create', [\App\Http\Controllers\QuizController::class, 'create'])->name('quiz-create');
-        Route::post('store', [\App\Http\Controllers\QuizController::class, 'store'])->name('quiz-store');
-        Route::get('show/{quiz:uuid}', [\App\Http\Controllers\QuizController::class, 'show'])->name('quiz-show');
-        Route::delete('delete/{quiz:uuid}', [\App\Http\Controllers\QuizController::class, 'destroy'])->name('quiz-delete');
+        Route::get('begin-broadcast/{quiz:uuid}', [QuizController::class, 'beginBroadcast'])->name('begin-broadcast');
+        Route::get('create', [QuizController::class, 'create'])->name('quiz-create');
+        Route::post('store', [QuizController::class, 'store'])->name('quiz-store');
+        Route::get('show/{quiz:uuid}', [QuizController::class, 'show'])->name('quiz-show');
+        Route::delete('delete/{quiz:uuid}', [QuizController::class, 'destroy'])->name('quiz-delete');
     });
 
     /**
      * Prefix: 'question'
      */
     Route::prefix('question')->group(function() {
-        Route::post('store/{quiz:uuid}', [\App\Http\Controllers\QuestionController::class, 'store'])->name('question-store');
-        Route::post('update/{question:uuid}', [\App\Http\Controllers\QuestionController::class, 'update'])->name('question-update');
-        Route::post('delete/{question:uuid}', [\App\Http\Controllers\QuestionController::class, 'destroy'])->name('question-destroy');
+        Route::post('store/{quiz:uuid}', [QuestionController::class, 'store'])->name('question-store');
+        Route::post('update/{question:uuid}', [QuestionController::class, 'update'])->name('question-update');
+        Route::post('delete/{question:uuid}', [QuestionController::class, 'destroy'])->name('question-destroy');
     });
 
     /**
      * Prefix: 'answer'
      */
     Route::prefix('answer')->group(function() {
-        Route::get('create/{question:uuid}', [\App\Http\Controllers\AnswerController::class, 'create'])->name('answer-create');
-        Route::post('store/{question:uuid}', [\App\Http\Controllers\AnswerController::class, 'store'])->name('answer-store');
+        Route::get('create/{question:uuid}', [AnswerController::class, 'create'])->name('answer-create');
+        Route::post('store/{question:uuid}', [AnswerController::class, 'store'])->name('answer-store');
+    });
+
+    /**
+     * Prefix: 'broadcasting'
+     */
+    Route::prefix('broadcasting')->group(function() {
+
+        /**
+         * Prefix: 'broadcasting/question'
+         */
+        Route::prefix('question')->group(function() {
+            Route::get('set-question-active/{question:uuid}', [QuestionController::class, 'setQuestionActive'])->name('set-question-active');
+            Route::get('open-question-for-answers/{question:uuid}', [QuestionController::class, 'openQuestionForAnswers'])->name('open-question-for-answers');
+        });
+
+        /**
+         * Prefix: 'broadcasting/quiz'
+         */
+        Route::prefix('quiz')->group(function() {
+            Route::get('begin-broadcast/{quiz:uuid}', [QuizController::class, 'beginBroadcast'])->name('begin-broadcast');
+            Route::get('end-broadcast/{quiz:uuid}', [QuizController::class, 'endBroadcast'])->name('end-broadcast');
+        });
+
+        /**
+         * Prefix: 'broadcasting/answer'
+         */
+        Route::prefix('answer')->group(function() {
+            Route::post('add', [AnswerController::class, 'addAnswer'])->name('add-answer');
+            Route::get('show/{answer:uuid}', [AnswerController::class, 'showAnswer'])->name('show-answer');
+            Route::get('remove/{answer:uuid}', [AnswerController::class, 'removeAnswer'])->name('remove-answer');
+        });
     });
 });
 

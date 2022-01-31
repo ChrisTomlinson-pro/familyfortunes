@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataClasses\BroadcastEndedData;
 use App\DataClasses\BroadcastStartedData;
-use App\Events\BroadcastEvent;
+use App\Events\QuizEvent;
 use App\Models\Quiz;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -23,7 +23,7 @@ class QuizController extends Controller
     {
         $dataClass = new BroadcastStartedData();
         $dataClass->setQuiz($quiz);
-        BroadcastEvent::dispatch($dataClass);
+        QuizEvent::dispatch($dataClass);
 
         return response()->json([], 201);
     }
@@ -37,7 +37,7 @@ class QuizController extends Controller
     {
         $dataClass = new BroadcastEndedData();
         $dataClass->setQuiz($quiz);
-        BroadcastEvent::dispatch($dataClass);
+        QuizEvent::dispatch($dataClass);
         return response()->json([], 201);
     }
 

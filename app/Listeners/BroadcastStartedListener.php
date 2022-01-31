@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\DataClasses\BroadcastStartedData;
-use App\Events\BroadcastEvent;
+use App\Events\QuizEvent;
 use App\Jobs\Quiz\BroadcastQuiz;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -27,7 +27,7 @@ class BroadcastStartedListener
      * @param  object  $event
      * @return void
      */
-    public function handle(BroadcastEvent $event)
+    public function handle(QuizEvent $event)
     {
         $dataClass = $event->dataClass;
         if ($dataClass instanceof BroadcastStartedData) {

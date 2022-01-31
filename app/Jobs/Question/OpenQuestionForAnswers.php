@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Jobs\Quiz;
+namespace App\Jobs\Question;
 
-use App\DataClasses\BroadcastStartedData;
+use App\DataClasses\OpenQuestionForAnswersData;
 use App\Events\BroadcastToChannelsEvent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -12,12 +12,14 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 
-class BroadcastQuiz implements ShouldQueue
+class OpenQuestionForAnswers implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    const SLEEP_TIME = 60;
+
     /**
-     * @var BroadcastStartedData
+     * @var OpenQuestionForAnswersData
      */
     private $dataClass;
 
@@ -26,8 +28,9 @@ class BroadcastQuiz implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(BroadcastStartedData $dataClass)
+    public function __construct(OpenQuestionForAnswersData $dataClass)
     {
+        $this->queue = 'default';
         $this->dataClass = $dataClass;
     }
 
@@ -38,8 +41,9 @@ class BroadcastQuiz implements ShouldQueue
      */
     public function handle()
     {
-        Cache::add('broadcasting', true);
-        Cache::add('activeQuiz', $this->dataClass->quiz->getAttributeValue('uuid'));
+        Cache::put('openQuestion', $this->dataClass->question->uuid, self::SLEEP_TIME);
         BroadcastToChannelsEvent::dispatch($this->dataClass);
+        sleep(self::SLEEP_TIME);
+        BroadcastToChannelsEvent::dispatch($this->dataClass, true);
     }
 }

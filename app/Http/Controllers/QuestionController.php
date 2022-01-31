@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\DataClasses\OpenQuestionForAnswersData;
 use App\DataClasses\SetQuestionActiveData;
-use App\Events\BroadcastEvent;
+use App\Events\QuestionEvent;
 use App\Models\Question;
 use App\Models\Quiz;
 use Illuminate\Http\JsonResponse;
@@ -22,10 +23,22 @@ class QuestionController extends Controller
     {
         $dataclass = new SetQuestionActiveData();
         $dataclass->setQuestion($question);
-        BroadcastEvent::dispatch($dataclass);
+        dd($dataclass);
+        QuestionEvent::dispatch($dataclass);
 
         return response()->json([], 201);
     }
+
+    public function openQuestionForAnswers(Question $question)
+    {
+        $dataClass = new OpenQuestionForAnswersData();
+        $dataClass->setQuestion($question);
+        QuestionEvent::dispatch($dataClass);
+
+        return response()->json([], 201);
+    }
+
+
 
     /**
      * Store a newly created resource in storage.
