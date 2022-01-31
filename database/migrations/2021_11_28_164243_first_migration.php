@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class FirstMigration extends Migration
 {
+    //add cascades on delete
+
     /**
      * Run the migrations.
      *

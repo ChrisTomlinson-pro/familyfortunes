@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Question extends Model
 {
@@ -33,6 +34,15 @@ class Question extends Model
         if (!$model instanceof Answer) {
             throw new \ErrorException('model failed to create', 500);
         }
+    }
+
+    /**
+     * Clears the cache of question answers array
+     * @return void
+     */
+    public function clearCache(): void
+    {
+        Cache::forget($this->uuid . '_answers');
     }
 
     public function quiz()

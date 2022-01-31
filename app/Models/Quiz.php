@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Quiz extends Model
 {
@@ -20,6 +21,15 @@ class Quiz extends Model
     public function getRouteKeyName()
     {
         return 'uuid';
+    }
+
+    /**
+     * Remove the cache entry that saves the active question for this quiz
+     * @return void
+     */
+    public function cleanCache(): void
+    {
+        Cache::forget($this->uuid . '_question');
     }
 
     public function questions() {

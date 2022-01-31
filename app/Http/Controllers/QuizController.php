@@ -7,6 +7,7 @@ use App\DataClasses\BroadcastStartedData;
 use App\Events\QuizEvent;
 use App\Models\Quiz;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -67,7 +68,7 @@ class QuizController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      * @throws \ErrorException
      */
     public function store(Request $request)
@@ -91,7 +92,7 @@ class QuizController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Quiz  $quiz
+     * @param Quiz $quiz
      * @return View
      */
     public function show(Quiz $quiz)
@@ -106,7 +107,7 @@ class QuizController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Quiz  $quiz
+     * @param Quiz $quiz
      * @return View
      */
     public function edit(Quiz $quiz)
@@ -118,8 +119,8 @@ class QuizController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Quiz $quiz
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Quiz $quiz
+     * @return RedirectResponse
      * @throws ErrorException
      */
     public function update(Request $request, Quiz $quiz)
@@ -136,11 +137,11 @@ class QuizController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Quiz $quiz
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Quiz $quiz
+     * @return RedirectResponse
      * @throws \ErrorException
      */
-    public function destroy(Quiz $quiz)
+    public function destroy(Quiz $quiz): RedirectResponse
     {
         if($quiz->delete()) {
             return redirect()->route('admin_home');
