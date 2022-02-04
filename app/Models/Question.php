@@ -14,6 +14,14 @@ class Question extends Model
 
     protected $guarded = [];
 
+    protected $hidden = [
+        'id',
+        'quiz_id',
+        'created_at',
+        'updated_at',
+        'is_broadcasting'
+    ];
+
     public function getRouteKeyName()
     {
         return 'uuid';

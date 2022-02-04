@@ -6,6 +6,8 @@ use App\DataClasses\AnswerAddedData;
 use App\DataClasses\RemoveAnswerData;
 use App\DataClasses\ShowAnswerData;
 use App\Events\AnswerEvent;
+use App\Helpers\CacheHelper;
+use App\Http\Resources\AnswersResource;
 use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Http\JsonResponse;
@@ -119,5 +121,18 @@ class AnswerController extends Controller
     public function update(Request $request, Answer $answer)
     {
         //
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function displayShowedAnswers()
+    {
+        $cacheHelper = new CacheHelper();
+        $cacheHelper->setQuizAndQuestions();
+        $cacheHelper->setActiveAndNextQuestion();
+        $cacheHelper->setShowedAnswers();
+
+        return (new AnswersResource($cacheHelper->showedAnswers))->response();
     }
 }

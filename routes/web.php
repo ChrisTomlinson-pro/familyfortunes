@@ -89,6 +89,15 @@ Route::middleware([])->group(function() {
             Route::get('remove/{answer:uuid}', [AnswerController::class, 'removeAnswer'])->name('remove-answer');
         });
     });
+
+    /**
+     * Prefix: 'display
+     */
+    Route::prefix('display')->group(function() {
+        Route::get('quiz', [QuizController::class, 'displayQuiz'])->name('display-quiz');
+        Route::get('question', [QuestionController::class, 'displayActiveQuestion'])->name('display-active-question');
+        Route::get('answers', [AnswerController::class, 'displayShowedAnswers'])->name('display-showed-answers');
+    });
 });
 
 require __DIR__.'/auth.php';

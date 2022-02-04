@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\DataClasses\OpenQuestionForAnswersData;
 use App\DataClasses\SetQuestionActiveData;
 use App\Events\QuestionEvent;
+use App\Helpers\CacheHelper;
+use App\Http\Resources\QuestionResource;
 use App\Models\Question;
 use App\Models\Quiz;
 use Illuminate\Http\JsonResponse;
@@ -105,5 +107,19 @@ class QuestionController extends Controller
         }
 
         throw new \ErrorException('failed to delete question');
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function displayActiveQuestion(): JsonResponse
+    {
+        $cacheHelper = new CacheHelper();
+        $cacheHelper->setQuizAndQuestions();
+        $cacheHelper->setActiveAndNextQuestion();
+        if (empty($cacheHelper->activeQuestion)) {
+            abort(422, 'Active question not set');
+        }
+        return (new QuestionResource($cacheHelper->activeQuestion))->response();
     }
 }

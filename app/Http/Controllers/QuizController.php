@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\DataClasses\BroadcastEndedData;
 use App\DataClasses\BroadcastStartedData;
 use App\Events\QuizEvent;
+use App\Helpers\CacheHelper;
+use App\Http\Resources\DisplayQuizResource;
 use App\Models\Quiz;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Psy\Exception\ErrorException;
@@ -148,5 +152,16 @@ class QuizController extends Controller
         }
 
         throw new \ErrorException('Failed to delete quiz');
+    }
+
+    /**
+     * Returns data to display the broadcasted quiz
+     * @return JsonResponse
+     */
+    public function displayQuiz(): JsonResponse
+    {
+        $cacheHelper = new CacheHelper();
+        $cacheHelper->setQuizAndQuestions();
+        return (new DisplayQuizResource($cacheHelper->quiz))->response();
     }
 }
