@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\DataClasses\SetQuestionActiveData;
-use App\Events\QuizEvent;
+use App\Events\QuestionEvent;
 use App\Jobs\Question\SetQuestionActive;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -26,7 +26,7 @@ class QuestionSetActiveListener
      * @param  object  $event
      * @return void
      */
-    public function handle(QuizEvent $event)
+    public function handle(QuestionEvent $event)
     {
         $dataClass = $event->dataClass;
         if ($dataClass instanceof SetQuestionActiveData) {

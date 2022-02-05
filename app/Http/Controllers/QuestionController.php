@@ -25,7 +25,6 @@ class QuestionController extends Controller
     {
         $dataclass = new SetQuestionActiveData();
         $dataclass->setQuestion($question);
-        dd($dataclass);
         QuestionEvent::dispatch($dataclass);
 
         return response()->json([], 201);

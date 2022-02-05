@@ -3,9 +3,7 @@
 namespace App\Listeners;
 
 use App\DataClasses\OpenQuestionForAnswersData;
-use App\DataClasses\SetQuestionActiveData;
 use App\Events\QuestionEvent;
-use App\Events\QuizEvent;
 use App\Jobs\Question\OpenQuestionForAnswers;
 use App\Jobs\Question\SetQuestionActive;
 use Illuminate\Contracts\Queue\ShouldQueue;

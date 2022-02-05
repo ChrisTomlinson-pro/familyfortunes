@@ -28,11 +28,12 @@ class AnswerAddedData implements DataClassInterface
     }
 
     /**
-     * @param Question $question
+     * @param string $question_uuid
      * @return void
      */
-    public function setQuestion(Question $question)
+    public function setQuestion(string $question_uuid)
     {
+        $question = Question::where('uuid', $question_uuid)->first();
         $this->question = $question;
     }
 }

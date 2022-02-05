@@ -28,12 +28,13 @@ class AnswerController extends Controller
     {
         $data = $request->validate([
             'text'      => 'required|string|max:255',
-            'question'  => 'required|string|max:255'
+            'question_uuid'  => 'required|string|max:255'
         ]);
+
 
         $dataClass = new AnswerAddedData();
         $dataClass->setAnswerText($data['text']);
-        $dataClass->setQuestion($data['question']);
+        $dataClass->setQuestion($data['question_uuid']);
         AnswerEvent::dispatch($dataClass);
 
         return response()->json([], 201);
@@ -98,6 +99,17 @@ class AnswerController extends Controller
         }
 
         throw new \ErrorException('failed to create answer');
+    }
+
+    /**
+     * @param Question $question
+     * @return mixed
+     */
+    public function indexForQuestion(Question $question): JsonResponse
+    {
+        return response()->json([
+            'answers' => $question->answers
+        ], 200);
     }
 
     /**

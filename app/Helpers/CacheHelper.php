@@ -35,6 +35,11 @@ class CacheHelper
      */
     public $showedAnswers;
 
+    /**
+     * @var Collection
+     */
+    public $allAnswersForActiveQuestion;
+
     public function __construct()
     {
         $this->checkIfBroadcasting();
@@ -82,6 +87,7 @@ class CacheHelper
 
         $questionUuid = Cache::get($this->quiz->uuid . "_question");
 
+        //find some way to display the answers, maybe without making a new endpoint
         if (isset($questionUuid)) {
             $this->activeQuestion = $this->questions->where('uuid', $questionUuid)->first();
             $index = collect($this->questions)->search($this->activeQuestion);
@@ -90,6 +96,15 @@ class CacheHelper
         }
 
         $this->nextQuestion = $this->questions->first();
+    }
+
+    public function setAllAnswersForActiveQuestion()
+    {
+        if (empty($this->activeQuestion)) {
+            abort( 422, 'active question not set');
+        }
+
+        $this->allAnswersForActiveQuestion = $this->activeQuestion->answers;
     }
 
     public function setShowedAnswers()

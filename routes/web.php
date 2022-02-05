@@ -96,8 +96,11 @@ Route::middleware([])->group(function() {
     Route::prefix('display')->group(function() {
         Route::get('quiz', [QuizController::class, 'displayQuiz'])->name('display-quiz');
         Route::get('question', [QuestionController::class, 'displayActiveQuestion'])->name('display-active-question');
+        Route::get('all-answers-for-question/{question:uuid}', [AnswerController::class, 'indexForQuestion'])->name('get-all-answers-for-question');
         Route::get('answers', [AnswerController::class, 'displayShowedAnswers'])->name('display-showed-answers');
     });
+
+    Route::post('submit-answer', [AnswerController::class, 'addAnswer'])->name('submit-answer');
 });
 
 require __DIR__.'/auth.php';

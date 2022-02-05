@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class Question extends Model
 {
@@ -35,6 +36,7 @@ class Question extends Model
     public function addAnswer(string $text)
     {
         $model = Answer::query()->create([
+            'uuid'         => Str::uuid()->toString(),
             'question_id'  => $this->id,
             'text'         => $text
         ]);
