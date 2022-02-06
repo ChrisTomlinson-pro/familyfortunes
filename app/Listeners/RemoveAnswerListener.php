@@ -30,7 +30,7 @@ class RemoveAnswerListener
     {
         $dataClass = $event->dataClass;
         if ($dataClass instanceof RemoveAnswerData) {
-            RemoveAnswer::dispatch($dataClass);
+            RemoveAnswer::dispatchSync($dataClass);
         }
     }
 }

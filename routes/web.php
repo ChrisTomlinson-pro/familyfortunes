@@ -69,7 +69,7 @@ Route::middleware([])->group(function() {
          */
         Route::prefix('question')->group(function() {
             Route::get('set-question-active/{question:uuid}', [QuestionController::class, 'setQuestionActive'])->name('set-question-active');
-            Route::get('open-question-for-answers/{question:uuid}', [QuestionController::class, 'openQuestionForAnswers'])->name('open-question-for-answers');
+            Route::get('open-question-for-answers', [QuestionController::class, 'openQuestionForAnswers'])->name('open-question-for-answers');
         });
 
         /**

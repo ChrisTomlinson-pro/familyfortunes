@@ -30,7 +30,7 @@ class ShowAnswerListener
     {
         $dataclass = $event->dataClass;
         if ($dataclass instanceof ShowAnswerData) {
-            ShowAnswer::dispatch($dataclass);
+            ShowAnswer::dispatchSync($dataclass);
         }
     }
 }

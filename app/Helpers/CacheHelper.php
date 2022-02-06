@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\Question;
 use App\Models\Quiz;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -43,6 +44,17 @@ class CacheHelper
     public function __construct()
     {
         $this->checkIfBroadcasting();
+    }
+
+    /**
+     * Checks if question is open for receiving answers
+     * @param string $uuid
+     * @return void
+     */
+    public function checkIfQuestionIsOpenForAnswers(string $uuid): bool
+    {
+        $openQuestion = Cache::get('openQuestion');
+        return $uuid === $openQuestion;
     }
 
     /**

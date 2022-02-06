@@ -24,13 +24,19 @@ class AnswerController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function addAnswer(Request $request): JsonResponse
+    public function addAnswer(Request $request)
     {
         $data = $request->validate([
             'text'      => 'required|string|max:255',
             'question_uuid'  => 'required|string|max:255'
         ]);
 
+        $cacheHelper = new CacheHelper();
+        $isOpen = $cacheHelper->checkIfQuestionIsOpenForAnswers($request->question_uuid);
+
+        if (!$isOpen) {
+            abort(401, "Question no longer open for answers");
+        }
 
         $dataClass = new AnswerAddedData();
         $dataClass->setAnswerText($data['text']);

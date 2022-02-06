@@ -30,7 +30,7 @@ class QuestionSetActiveListener
     {
         $dataClass = $event->dataClass;
         if ($dataClass instanceof SetQuestionActiveData) {
-            SetQuestionActive::dispatch($dataClass);
+            SetQuestionActive::dispatchSync($dataClass);
         }
     }
 }

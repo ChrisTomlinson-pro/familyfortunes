@@ -41,17 +41,18 @@ class ShowAnswer implements ShouldQueue
         $question = $this->dataClass->answer->question;
         $cacheKey = $question->uuid . '_answers';
 
-        $cachedAnswers = Cache::get($cacheKey);
-        if (!$cachedAnswers) {
+        $cachedAnswers = Cache::get($cacheKey, []);
+        if (!$cachedAnswers || !is_array($cachedAnswers)) {
             $cachedAnswers = [];
         }
+
 
         $newCacheData = [
             'uuid' => $this->dataClass->answer->uuid,
             'text' => $this->dataClass->answer->text
         ];
 
-        $cachedAnswers = array_push($cachedAnswers, $newCacheData);
+        $cachedAnswers[] = $newCacheData;
         Cache::put($cacheKey, $cachedAnswers);
         BroadcastToChannelsEvent::dispatch($this->dataClass);
     }

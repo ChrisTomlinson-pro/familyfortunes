@@ -16,12 +16,14 @@ class OpenQuestionForAnswers implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    const SLEEP_TIME = 60;
+    const SLEEP_TIME = 20;
 
     /**
      * @var OpenQuestionForAnswersData
      */
     private $dataClass;
+
+    public $timeout = 30;
 
     /**
      * Create a new job instance.

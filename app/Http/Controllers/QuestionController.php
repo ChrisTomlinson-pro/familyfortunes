@@ -30,8 +30,13 @@ class QuestionController extends Controller
         return response()->json([], 201);
     }
 
-    public function openQuestionForAnswers(Question $question)
+    public function openQuestionForAnswers()
     {
+        $cacheHelper = new CacheHelper();
+        $cacheHelper->setQuizAndQuestions();
+        $cacheHelper->setActiveAndNextQuestion();
+        $question = $cacheHelper->activeQuestion;
+
         $dataClass = new OpenQuestionForAnswersData();
         $dataClass->setQuestion($question);
         QuestionEvent::dispatch($dataClass);
