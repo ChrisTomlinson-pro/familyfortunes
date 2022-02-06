@@ -38,6 +38,10 @@ class ShowAnswer implements ShouldQueue
      */
     public function handle()
     {
+        $this->dataClass->answer->update([
+            'is_showing' => true
+        ]);
+
         $question = $this->dataClass->answer->question;
         $cacheKey = $question->uuid . '_answers';
 
@@ -45,7 +49,6 @@ class ShowAnswer implements ShouldQueue
         if (!$cachedAnswers || !is_array($cachedAnswers)) {
             $cachedAnswers = [];
         }
-
 
         $newCacheData = [
             'uuid' => $this->dataClass->answer->uuid,

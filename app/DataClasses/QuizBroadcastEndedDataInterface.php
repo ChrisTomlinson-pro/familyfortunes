@@ -2,10 +2,10 @@
 
 namespace App\DataClasses;
 
-use App\DataClasses\Interfaces\DataClassInterface;
+use App\DataClasses\Interfaces\QuizDataClassInterface;
 use App\Models\Quiz;
 
-class BroadcastStartedData implements DataClassInterface
+class QuizBroadcastEndedDataInterface implements QuizDataClassInterface
 {
     /**
      * @var Quiz

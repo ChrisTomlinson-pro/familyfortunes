@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Cache;
 
 class Answer extends Model
@@ -21,12 +22,38 @@ class Answer extends Model
         'question_id'
     ];
 
-    public function getRouteKeyName()
+    /**
+     * @return string
+     */
+    public function getRouteKeyName(): string
     {
         return 'uuid';
     }
 
-    public function question()
+    /**
+     * Clears question from questions array in cache
+     * @return void
+     */
+    public function clearCache(): void
+    {
+        $questionUuid = $this->question->uuid;
+        $cacheKey = $questionUuid . '_answers';
+        $cachedAnswers = Cache::get($cacheKey);
+
+        $newCachedAnswers = collect([]);
+        foreach ($cachedAnswers as $answer) {
+            if (!in_array($this->uuid, $answer)) {
+                $newCachedAnswers->add($answer);
+            }
+        }
+
+        Cache::put($cacheKey, $newCachedAnswers->toArray());
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function question(): BelongsTo
     {
         return $this->belongsTo(Question::class);
     }

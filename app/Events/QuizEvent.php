@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\DataClasses\Interfaces\DataClassInterface;
+use App\DataClasses\Interfaces\QuizDataClassInterface;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -12,7 +12,7 @@ class QuizEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var DataClassInterface
+     * @var QuizDataClassInterface
      */
     public $dataClass;
 
@@ -21,7 +21,7 @@ class QuizEvent
      *
      * @return void
      */
-    public function __construct(DataClassInterface $dataClass)
+    public function __construct(QuizDataClassInterface $dataClass)
     {
         $this->dataClass =$dataClass;
     }

@@ -2,10 +2,10 @@
 
 namespace App\DataClasses;
 
-use App\DataClasses\Interfaces\DataClassInterface;
+use App\DataClasses\Interfaces\QuestionDataClassInterface;
 use App\Models\Question;
 
-class SetQuestionActiveData implements DataClassInterface
+class SetQuestionActiveData implements QuestionDataClassInterface
 {
     /**
      * @var Question

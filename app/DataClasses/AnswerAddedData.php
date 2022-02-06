@@ -2,11 +2,10 @@
 
 namespace App\DataClasses;
 
-use App\DataClasses\Interfaces\DataClassInterface;
-use App\Models\Answer;
+use App\DataClasses\Interfaces\AnswerDataClassInterface;
 use App\Models\Question;
 
-class AnswerAddedData implements DataClassInterface
+class AnswerAddedData implements AnswerDataClassInterface
 {
     /**
      * @var string

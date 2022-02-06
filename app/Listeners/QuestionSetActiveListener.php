@@ -23,7 +23,7 @@ class QuestionSetActiveListener
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param QuestionEvent $event
      * @return void
      */
     public function handle(QuestionEvent $event)

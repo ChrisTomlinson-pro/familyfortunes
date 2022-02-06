@@ -33,7 +33,7 @@ class Question extends Model
      * @return void
      * @throws \ErrorException
      */
-    public function addAnswer(string $text)
+    public function addAnswer(string $text): void
     {
         $model = Answer::query()->create([
             'uuid'         => Str::uuid()->toString(),
@@ -53,6 +53,9 @@ class Question extends Model
     public function clearCache(): void
     {
         Cache::forget($this->uuid . '_answers');
+        if (Cache::get('activeQuestion') === $this->uuid) {
+            Cache::forget('activeQuestion');
+        }
     }
 
     public function quiz()

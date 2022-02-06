@@ -119,13 +119,18 @@ class CacheHelper
         $this->allAnswersForActiveQuestion = $this->activeQuestion->answers;
     }
 
-    public function setShowedAnswers()
+    /**
+     * Set showed answers for active question
+     * @return void
+     */
+    public function setShowedAnswers(): void
     {
         if (empty($this->activeQuestion)) {
             abort(422, 'Active question not set');
         }
 
         $this->showedAnswers = Cache::get($this->activeQuestion->uuid . '_answers');
+//        $this->showedAnswers = $this->activeQuestion->answers()->where('is_showing', true)->get();
 
         if (empty($this->showedAnswers)) {
             abort(422, 'Answers have not been set');

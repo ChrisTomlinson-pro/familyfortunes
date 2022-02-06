@@ -3,8 +3,8 @@
 namespace App\Events;
 
 use App\DataClasses\AnswerAddedData;
-use App\DataClasses\BroadcastEndedData;
-use App\DataClasses\BroadcastStartedData;
+use App\DataClasses\QuizBroadcastEndedDataInterface;
+use App\DataClasses\QuizBroadcastStartedDataInterface;
 use App\DataClasses\Interfaces\DataClassInterface;
 use App\DataClasses\OpenQuestionForAnswersData;
 use App\DataClasses\RemoveAnswerData;
@@ -23,8 +23,8 @@ class BroadcastToChannelsEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     const QUIZ_BROADCASTS = [
-        BroadcastEndedData::class,
-        BroadcastStartedData::class
+        QuizBroadcastEndedDataInterface::class,
+        QuizBroadcastStartedDataInterface::class
     ];
 
     /**
@@ -92,13 +92,13 @@ class BroadcastToChannelsEvent
         switch (true) {
 
             //
-            case $this->dataClass instanceof BroadcastStartedData:
+            case $this->dataClass instanceof QuizBroadcastStartedDataInterface:
                 $this->broadcastData = [
                     'event' => 'broadcastStarted'
                 ];
                 break;
 
-            case $this->dataClass instanceof BroadcastEndedData:
+            case $this->dataClass instanceof QuizBroadcastEndedDataInterface:
                 $this->broadcastData = [
                     'event' => 'broadcastEnded'
                 ];

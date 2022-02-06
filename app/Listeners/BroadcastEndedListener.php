@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\DataClasses\BroadcastEndedData;
+use App\DataClasses\QuizBroadcastEndedDataInterface;
 use App\Events\QuizEvent;
 use App\Jobs\Quiz\EndQuizBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -23,13 +23,13 @@ class BroadcastEndedListener
     /**
      * Handle the event.
      *
-     * @param  object  $event
+     * @param QuizEvent $event
      * @return void
      */
     public function handle(QuizEvent $event)
     {
         $dataClass = $event->dataClass;
-        if ($dataClass instanceof BroadcastEndedData) {
+        if ($dataClass instanceof QuizBroadcastEndedDataInterface) {
             EndQuizBroadcast::dispatch($dataClass);
         }
     }

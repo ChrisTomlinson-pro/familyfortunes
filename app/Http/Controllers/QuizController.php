@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\DataClasses\BroadcastEndedData;
-use App\DataClasses\BroadcastStartedData;
+use App\DataClasses\QuizBroadcastEndedDataInterface;
+use App\DataClasses\QuizBroadcastStartedDataInterface;
 use App\Events\QuizEvent;
 use App\Helpers\CacheHelper;
 use App\Http\Resources\DisplayQuizResource;
@@ -24,7 +24,7 @@ class QuizController extends Controller
      */
     public function beginBroadcast(Quiz $quiz): JsonResponse
     {
-        $dataClass = new BroadcastStartedData();
+        $dataClass = new QuizBroadcastStartedDataInterface();
         $dataClass->setQuiz($quiz);
         QuizEvent::dispatch($dataClass);
 
@@ -38,7 +38,7 @@ class QuizController extends Controller
      */
     public function endBroadCast(Quiz $quiz): JsonResponse
     {
-        $dataClass = new BroadcastEndedData();
+        $dataClass = new QuizBroadcastEndedDataInterface();
         $dataClass->setQuiz($quiz);
         QuizEvent::dispatch($dataClass);
         return response()->json([], 201);

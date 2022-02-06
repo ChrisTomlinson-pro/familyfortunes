@@ -2,11 +2,10 @@
 
 namespace App\DataClasses;
 
-use App\DataClasses\Interfaces\DataClassInterface;
+use App\DataClasses\Interfaces\AnswerDataClassInterface;
 use App\Models\Answer;
-use App\Models\Question;
 
-class ShowAnswerData implements DataClassInterface
+class ShowAnswerData implements AnswerDataClassInterface
 {
     /**
      * @var Answer
@@ -14,7 +13,7 @@ class ShowAnswerData implements DataClassInterface
     public $answer;
 
     /**
-     * @param string $text
+     * @param Answer $answer
      * @return void
      */
     public function setAnswer(Answer $answer)

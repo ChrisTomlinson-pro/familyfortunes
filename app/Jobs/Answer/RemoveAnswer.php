@@ -39,6 +39,5 @@ class RemoveAnswer implements ShouldQueue
     {
         BroadcastToChannelsEvent::dispatch($this->dataClass);
         $this->dataClass->answer->delete();
-
     }
 }

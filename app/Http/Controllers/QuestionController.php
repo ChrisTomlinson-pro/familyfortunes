@@ -30,7 +30,10 @@ class QuestionController extends Controller
         return response()->json([], 201);
     }
 
-    public function openQuestionForAnswers()
+    /**
+     * @return JsonResponse
+     */
+    public function openQuestionForAnswers(): JsonResponse
     {
         $cacheHelper = new CacheHelper();
         $cacheHelper->setQuizAndQuestions();
@@ -43,8 +46,6 @@ class QuestionController extends Controller
 
         return response()->json([], 201);
     }
-
-
 
     /**
      * Store a newly created resource in storage.

@@ -2,10 +2,10 @@
 
 namespace App\DataClasses;
 
-use App\DataClasses\Interfaces\DataClassInterface;
+use App\DataClasses\Interfaces\QuestionDataClassInterface;
 use App\Models\Question;
 
-class OpenQuestionForAnswersData implements DataClassInterface
+class OpenQuestionForAnswersData implements QuestionDataClassInterface
 {
     /**
      * @var Question

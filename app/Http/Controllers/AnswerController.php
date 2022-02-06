@@ -152,5 +152,7 @@ class AnswerController extends Controller
         $cacheHelper->setShowedAnswers();
 
         return (new AnswersResource($cacheHelper->showedAnswers))->response();
+
+
     }
 }
