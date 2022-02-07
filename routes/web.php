@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +22,7 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Route::get('/dashboard', function () {
-    $quizzes = \App\Models\Quiz::all();
-    return view('dashboard', ['quizzes' => $quizzes]);
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'show'])->middleware(['auth'])->name('dashboard');
 
 //Route::middleware('auth')->group(function() {
 Route::middleware([])->group(function() {

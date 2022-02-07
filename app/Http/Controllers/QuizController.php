@@ -146,7 +146,7 @@ class QuizController extends Controller
     public function destroy(Quiz $quiz): RedirectResponse
     {
         if($quiz->delete()) {
-            return redirect()->route('admin_home');
+            return redirect()->route('dashboard');
         }
 
         throw new \ErrorException('Failed to delete quiz');
