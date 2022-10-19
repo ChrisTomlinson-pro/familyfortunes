@@ -33,7 +33,6 @@ Route::middleware([])->group(function() {
      * Prefix: 'quiz'
      */
     Route::prefix('quiz')->group(function() {
-        Route::get('begin-broadcast/{quiz:uuid}', [QuizController::class, 'beginBroadcast'])->name('begin-broadcast');
         Route::get('create', [QuizController::class, 'create'])->name('quiz-create');
         Route::post('store', [QuizController::class, 'store'])->name('quiz-store');
         Route::get('show/{quiz:uuid}', [QuizController::class, 'show'])->name('quiz-show');
@@ -95,6 +94,7 @@ Route::middleware([])->group(function() {
         Route::get('quiz', [QuizController::class, 'displayQuiz'])->name('display-quiz');
         Route::get('question', [QuestionController::class, 'displayActiveQuestion'])->name('display-active-question');
         Route::get('all-answers-for-question/{question:uuid}', [AnswerController::class, 'indexForQuestion'])->name('get-all-answers-for-question');
+        Route::get('all-questions-for-quiz/{quiz:uuid}', [QuizController::class, 'getAllQuestions'])->name('get-all-questions-for-quiz');
         Route::get('answers', [AnswerController::class, 'displayShowedAnswers'])->name('display-showed-answers');
     });
 

@@ -101,23 +101,16 @@ class QuestionController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Question $question
-     * @return RedirectResponse
-     * @throws \ErrorException
      */
-    public function destroy(Question $question)
+    public static function destroy(Question $question): void
     {
-        $quiz = $question->quiz;
-        if ($question->delete()) {
-            return redirect()->route('quiz-show', ['quiz' => $quiz->uuid]);
-        }
-
-        throw new \ErrorException('failed to delete question');
+        $question->delete();
     }
 
     /**
      * @return JsonResponse
      */
-    public function displayActiveQuestion(): JsonResponse
+    public static function displayActiveQuestion(): JsonResponse
     {
         $cacheHelper = new CacheHelper();
         $cacheHelper->setQuizAndQuestions();

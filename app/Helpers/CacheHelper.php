@@ -43,7 +43,15 @@ class CacheHelper
 
     public function __construct()
     {
-        $this->checkIfBroadcasting();
+    }
+
+    /**
+     * @return null
+     */
+    public function getActiveQuiz()
+    {
+        $this->setQuizAndQuestions();
+        return $this->quiz;
     }
 
     /**
@@ -77,6 +85,9 @@ class CacheHelper
             $this->quiz = $quiz;
         } else {
             $quizUuid = Cache::get('activeQuiz');
+            if (empty($quizUuid)) {
+                return;
+            }
             $quizQuery = Quiz::query();
 
             $quizQuery->where('uuid', $quizUuid);
@@ -131,10 +142,6 @@ class CacheHelper
 
         $this->showedAnswers = Cache::get($this->activeQuestion->uuid . '_answers');
 //        $this->showedAnswers = $this->activeQuestion->answers()->where('is_showing', true)->get();
-
-        if (empty($this->showedAnswers)) {
-            abort(422, 'Answers have not been set');
-        }
     }
 
     public function checkResults()

@@ -38,7 +38,6 @@ class QuizObserver
     {
         //get all the answers and questions from the cache and remove
         $quiz->cleanCache();
-
     }
 
     /**

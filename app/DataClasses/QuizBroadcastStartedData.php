@@ -5,7 +5,7 @@ namespace App\DataClasses;
 use App\DataClasses\Interfaces\QuizDataClassInterface;
 use App\Models\Quiz;
 
-class QuizBroadcastEndedDataInterface implements QuizDataClassInterface
+class QuizBroadcastStartedData implements QuizDataClassInterface
 {
     /**
      * @var Quiz

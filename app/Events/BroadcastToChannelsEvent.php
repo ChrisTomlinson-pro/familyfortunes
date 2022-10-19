@@ -3,8 +3,8 @@
 namespace App\Events;
 
 use App\DataClasses\AnswerAddedData;
-use App\DataClasses\QuizBroadcastEndedDataInterface;
-use App\DataClasses\QuizBroadcastStartedDataInterface;
+use App\DataClasses\QuizBroadcastEndedData;
+use App\DataClasses\QuizBroadcastStartedData;
 use App\DataClasses\Interfaces\DataClassInterface;
 use App\DataClasses\OpenQuestionForAnswersData;
 use App\DataClasses\RemoveAnswerData;
@@ -17,15 +17,11 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
-class BroadcastToChannelsEvent
+class BroadcastToChannelsEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    const QUIZ_BROADCASTS = [
-        QuizBroadcastEndedDataInterface::class,
-        QuizBroadcastStartedDataInterface::class
-    ];
 
     /**
      * @var DataClassInterface
@@ -46,6 +42,11 @@ class BroadcastToChannelsEvent
      * @var array
      */
     public $broadcastChannels;
+
+    /**
+     * @var string
+     */
+    public $broadcastName;
 
     /**
      * Create a new event instance.
@@ -79,7 +80,14 @@ class BroadcastToChannelsEvent
 
     public function broadcastWith()
     {
+        Log::debug("hit broadcast with");
         return $this->broadcastData;
+    }
+
+    public function broadcastAs()
+    {
+        Log::debug("hit broadcast as");
+        return $this->broadcastName;
     }
 
     /**
@@ -88,17 +96,16 @@ class BroadcastToChannelsEvent
      */
     private function setBroadcastData(): void
     {
-
         switch (true) {
-
             //
-            case $this->dataClass instanceof QuizBroadcastStartedDataInterface:
+            case $this->dataClass instanceof QuizBroadcastStartedData:
                 $this->broadcastData = [
                     'event' => 'broadcastStarted'
                 ];
+                $this->broadcastName = 'broadcastStarted';
                 break;
 
-            case $this->dataClass instanceof QuizBroadcastEndedDataInterface:
+            case $this->dataClass instanceof QuizBroadcastEndedData:
                 $this->broadcastData = [
                     'event' => 'broadcastEnded'
                 ];

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+Broadcast::channel('auth.quiz', function ($user) {
+    \Illuminate\Support\Facades\Log::debug("Hitting the channels.php");
+    return 1;
 });

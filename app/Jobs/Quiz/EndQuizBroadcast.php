@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Quiz;
 
-use App\DataClasses\QuizBroadcastEndedDataInterface;
+use App\DataClasses\QuizBroadcastEndedData;
 use App\Events\BroadcastToChannelsEvent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -17,7 +17,7 @@ class EndQuizBroadcast implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * @var QuizBroadcastEndedDataInterface
+     * @var QuizBroadcastEndedData
      */
     private $dataClass;
 
@@ -26,7 +26,7 @@ class EndQuizBroadcast implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(QuizBroadcastEndedDataInterface $dataClass)
+    public function __construct(QuizBroadcastEndedData $dataClass)
     {
         $this->dataClass = $dataClass;
     }

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\DataClasses\QuizBroadcastEndedDataInterface;
-use App\DataClasses\QuizBroadcastStartedDataInterface;
+use App\DataClasses\QuizBroadcastEndedData;
+use App\DataClasses\QuizBroadcastStartedData;
 use App\Events\QuizEvent;
 use App\Helpers\CacheHelper;
 use App\Http\Resources\DisplayQuizResource;
+use App\Http\Resources\QuestionResource;
 use App\Models\Quiz;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -18,17 +19,26 @@ use Psy\Exception\ErrorException;
 class QuizController extends Controller
 {
     /**
-     * Start the quiz broadcast
+     * Get all questions to display on dashboard
      * @param Quiz $quiz
      * @return JsonResponse
      */
-    public function beginBroadcast(Quiz $quiz): JsonResponse
+    public function getAllQuestions(Quiz $quiz): JsonResponse
     {
-        $dataClass = new QuizBroadcastStartedDataInterface();
+        $questions = $quiz->questions;
+        return (new QuestionResource($questions))->response();
+    }
+
+    /**
+     * Start the quiz broadcast
+     * @param Quiz $quiz
+     * @return void
+     */
+    public static function beginBroadcast(Quiz $quiz): void
+    {
+        $dataClass = new QuizBroadcastStartedData();
         $dataClass->setQuiz($quiz);
         QuizEvent::dispatch($dataClass);
-
-        return response()->json([], 201);
     }
 
     /**
@@ -36,9 +46,9 @@ class QuizController extends Controller
      * @param Quiz $quiz
      * @return JsonResponse
      */
-    public function endBroadCast(Quiz $quiz): JsonResponse
+    public static function endBroadCast(Quiz $quiz): JsonResponse
     {
-        $dataClass = new QuizBroadcastEndedDataInterface();
+        $dataClass = new QuizBroadcastEndedData();
         $dataClass->setQuiz($quiz);
         QuizEvent::dispatch($dataClass);
         return response()->json([], 201);
@@ -140,16 +150,10 @@ class QuizController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Quiz $quiz
-     * @return RedirectResponse
-     * @throws \ErrorException
      */
-    public function destroy(Quiz $quiz): RedirectResponse
+    public static function destroy(Quiz $quiz): void
     {
-        if($quiz->delete()) {
-            return redirect()->route('dashboard');
-        }
-
-        throw new \ErrorException('Failed to delete quiz');
+        $quiz->delete();
     }
 
     /**
